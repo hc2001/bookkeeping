@@ -2,6 +2,8 @@
 
 > A Vue.js project
 
+## 一个纯记账本 代码供大家参考 自己用来记账
+
 ## Build Setup
 
 ``` bash
@@ -19,3 +21,6 @@ npm run build --report
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+
+## vueX公共仓库存储 vant-Ui框架  
