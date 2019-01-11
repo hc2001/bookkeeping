@@ -3,18 +3,44 @@
     <div class="panel clearfix">
       <div class="panel_top clearfix">
         <p>净资产</p>
-        <div class="total_momey">1000.00</div>
+        <div class="net_assets">{{totalMoney.netAssets}}</div>
       </div>
       <div class="panel_left clearfix">
-        <div class="income">20000.00</div>
+        <div class="income">{{totalMoney.moneys}}</div>
         <p>本月收入</p>
       </div>
       <div class="panel_right clearfix">
-        <div class="expenditure">3200.00</div>
+        <div class="expenditure">{{totalMoney.pays}}</div>
         <p>本月支出</p>
       </div>
     </div>
-    <div class="dataList clearfix">
+    <div class="dataList clearfix" v-for="item in dataList" :key="item.id">
+      <div class="data_top clearfix">
+        <p class="left clearfix">日期：<span>{{item.date}}</span> </p>
+        <div class="right clearfix">
+          <div class="income_money">
+            收：<span>{{item.income}}</span>
+          </div>
+          <div class="pay_money">
+            支：<span>{{item.pay}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="list clearfix" v-for="items in item.list" :key="items.name">
+        <div class="list_left clearfix">
+          <van-icon :name="items.icon" size="1rem" />
+        </div>
+        <div class="list_center clearfix">
+            <p class="name clearfix">{{items.name}}</p>
+            <span class="remarks clearfix">{{items.remarks}}</span>
+          </div>
+        <div class="list_right clearfix">
+          <div class="money clearfix">{{items.money}}</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- <div class="dataList clearfix">
       <div class="data_top clearfix">
         <p class="left clearfix">日期：<span>2019-01-10</span> </p>
         <div class="right clearfix">
@@ -38,57 +64,8 @@
           <div class="money clearfix">-188.00</div>
         </div>
       </div>
-    </div>
-    <div class="dataList clearfix">
-      <div class="data_top clearfix">
-        <p class="left clearfix">日期：<span>2019-01-10</span> </p>
-        <div class="right clearfix">
-          <div class="income_momey">
-            收：<span>20000.00</span>
-          </div>
-          <div class="pay_money">
-            支：<span>1000.00</span>
-          </div>
-        </div>
-      </div>
-      <div class="list clearfix">
-        <div class="list_left clearfix">
-          <van-icon name="alipay" size="1rem" />
-        </div>
-        <div class="list_center clearfix">
-            <p class="name clearfix">其他</p>
-            <span class="remarks clearfix">外卖</span>
-          </div>
-        <div class="list_right clearfix">
-          <div class="money clearfix">-188.00</div>
-        </div>
-      </div>
-    </div>
-    <div class="dataList clearfix">
-      <div class="data_top clearfix">
-        <p class="left clearfix">日期：<span>2019-01-10</span> </p>
-        <div class="right clearfix">
-          <div class="income_momey">
-            收：<span>20000.00</span>
-          </div>
-          <div class="pay_money">
-            支：<span>1000.00</span>
-          </div>
-        </div>
-      </div>
-      <div class="list clearfix">
-        <div class="list_left clearfix">
-          <van-icon name="alipay" size="1rem" />
-        </div>
-        <div class="list_center clearfix">
-            <p class="name clearfix">其他</p>
-            <span class="remarks clearfix">外卖</span>
-          </div>
-        <div class="list_right clearfix">
-          <div class="money clearfix">-188.00</div>
-        </div>
-      </div>
-    </div>
+      
+    </div> -->
   </div>
 </template>
 
@@ -97,11 +74,23 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      
+      dataList:[],   // 存放账本数据列表
+      totalMoney:{}, // 存放总收入和总支出和净资产的对象
     }
   },
+  created(){
+    this.getDataList();
+    this.getTotalMoney();
+  },
   methods:{
-
+    getDataList(){
+      this.dataList = this.$store.getters.dataLists
+      // console.log(this.dataList);
+    },
+    getTotalMoney(){  // 本月支出 本月收入 净资产
+      this.totalMoney = this.$store.getters.totalMoneys;
+      console.log(this.totalMoney);
+    }
   }
 }
 </script>
@@ -140,7 +129,7 @@ export default {
             font-size: .36rem;
             color: #fff;
           }
-          > .total_momey {
+          > .net_assets {
             padding-top: .08rem;
             color: #E36049
           }
@@ -188,7 +177,7 @@ export default {
           > .right {
             float: right;
             padding-right: .2rem;
-            > .income_momey {
+            > .income_money {
               float: left;
               padding-right: .2rem;
               color: #E36049;
@@ -222,6 +211,7 @@ export default {
                 color: #000;
               }
               > .remarks {
+                width: 4rem;
                 position: absolute;
                 top: .24rem;
                 color: #0000007a;
