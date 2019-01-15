@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <van-nav-bar title="纯记账" right-text="回到顶部" @click-right="goTop" right-arrow>
+      <van-icon name="wap-nav" slot="left" @click="openLeft" />
+    </van-nav-bar>
     <div class="panel clearfix">
       <div class="panel_top clearfix">
         <p>净资产</p>
@@ -28,44 +31,22 @@
       </div>
       <div class="list clearfix" v-for="items in item.list" :key="items.name">
         <div class="list_left clearfix">
-          <van-icon :name="items.icon" size="1rem" />
+          <span class="iconfont" v-html="items.icon"></span>
         </div>
         <div class="list_center clearfix">
-            <p class="name clearfix">{{items.name}}</p>
-            <span class="remarks clearfix">{{items.remarks}}</span>
-          </div>
+          <p class="name clearfix">{{items.name}}</p>
+          <span class="note clearfix">{{items.note}}</span>
+        </div>
         <div class="list_right clearfix">
           <div class="money clearfix">{{items.money}}</div>
         </div>
       </div>
     </div>
-    
-    <!-- <div class="dataList clearfix">
-      <div class="data_top clearfix">
-        <p class="left clearfix">日期：<span>2019-01-10</span> </p>
-        <div class="right clearfix">
-          <div class="income_momey">
-            收：<span>20000.00</span>
-          </div>
-          <div class="pay_money">
-            支：<span>1000.00</span>
-          </div>
-        </div>
-      </div>
-      <div class="list clearfix">
-        <div class="list_left clearfix">
-          <van-icon name="alipay" size="1rem" />
-        </div>
-        <div class="list_center clearfix">
-            <p class="name clearfix">其他</p>
-            <span class="remarks clearfix">外卖</span>
-          </div>
-        <div class="list_right clearfix">
-          <div class="money clearfix">-188.00</div>
-        </div>
-      </div>
-      
-    </div> -->
+    <!-- 进入记账页面 -->
+    <router-link to="/remember" tag="div" class="remember">
+      <span>+</span>
+    </router-link>
+
   </div>
 </template>
 
@@ -90,6 +71,12 @@ export default {
     getTotalMoney(){  // 本月支出 本月收入 净资产
       this.totalMoney = this.$store.getters.totalMoneys;
       console.log(this.totalMoney);
+    },
+    goTop(){
+      console.log('goTop');
+    },
+    openLeft(){
+      console.log('openLeft');
     }
   }
 }
@@ -106,6 +93,25 @@ export default {
         /*去除移动端特有的点击高亮效果*/
         -webkit-tap-highlight-color: transparent;
     }
+    // 字体图标
+    @font-face {
+        font-family: 'iconfont';
+        src: url('../lib/icon/iconfont.eot');
+        src: url('../lib/icon/iconfont.eot?#iefix') format('embedded-opentype'),
+            url('../lib/icon/iconfont.woff2') format('woff2'),
+            url('../lib/icon/iconfont.woff') format('woff'),
+            url('../lib/icon/iconfont.ttf') format('truetype'),
+            url('../lib/icon/iconfont.svg#iconfont') format('svg');
+    }
+    .iconfont {
+        font-family: "iconfont" !important;
+        font-size: .8rem;
+        font-style: normal;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        color: #79C3EE;
+    }
+    // 清除浮动
     .clearfix::before,
     .clearfix::after{
         content: "";
@@ -210,7 +216,7 @@ export default {
                 font-weight: 600;
                 color: #000;
               }
-              > .remarks {
+              > .note {
                 width: 4rem;
                 position: absolute;
                 top: .24rem;
@@ -224,6 +230,23 @@ export default {
               font-size: .45rem;
               font-weight: 800;
             }
+        }
+      }
+      /* 进入记账页面 */
+      .remember {
+        position: fixed;
+        right: .4rem;
+        bottom: 1.5rem;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 50%;
+        background-color: #a93f2c;
+        > span {
+          position: absolute;
+          left: 26%;
+          top: 0;  
+          color: #fff;
+          font-size: .7rem;
         }
       }
     }

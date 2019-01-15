@@ -8,21 +8,21 @@ export default new Vuex.Store({
         dataList:[
             { id:1,date:"2019-01-11",income:20000,pay:9990,
             list:[{
-                icon:'alipay',name:'买菜',remarks:'吃东西',money:999
+                icon:'&#xe65b;',name:'买菜',note:'吃东西',money:999
             },{
-                icon:'alipay',name:'吃饭',remarks:'啊哈哈',money:-888.92
+                icon:'&#xe65b;',name:'吃饭',note:'啊哈哈',money:-888.92
             }]},
             { id:2,date:"2019-01-10",income:888,pay:222,
             list:[{
-                icon:'alipay',name:'买',remarks:'牛逼',money:44
+                icon:'&#xe65b;',name:'买',note:'牛逼',money:44
             },{
-                icon:'alipay',name:'呀',remarks:'嘻嘻',money:32
+                icon:'&#xe65b;',name:'呀',note:'嘻嘻',money:32
             }]},
             { id:3,date:"2019-01-09",income:888,pay:222,
             list:[{
-                icon:'alipay',name:'买',remarks:'牛逼',money:44
+                icon:'&#xe65b;',name:'买',note:'牛逼',money:44
             },{
-                icon:'alipay',name:'呀',remarks:'嘻嘻',money:322
+                icon:'&#xe65b;',name:'呀',note:'嘻嘻',money:322
             }]}]
     },
     mutations:{
@@ -30,7 +30,10 @@ export default new Vuex.Store({
             let flag = false;
             state.dataList.some(item=>{
                 if (item.date == data.date) { // 进入这个判断则是同一天
-                    
+                    item.list.push({icon:data.icon,name:data.name,note:data.note,money:data.money});
+                    return true;
+                } else {
+                    item.push(data)
                 }
             })
         }

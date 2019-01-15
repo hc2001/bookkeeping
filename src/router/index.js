@@ -1,15 +1,25 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/home'
+import Remember from '@/components/remember'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/',
+      path:'/',
+      redirect:'/home', // 重定向 
+    },
+    {
+      path: '/home',
       name: 'Home',
       component: Home
+    },
+    {
+      path: '/remember',
+      name: 'Remember',
+      component: Remember
     }
   ]
 })
