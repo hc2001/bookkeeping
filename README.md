@@ -23,7 +23,7 @@ npm run build --report
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
 
-## Vuex公共仓库存储 vant-Ui框架   
+## Vuex公共仓库存储 vant-Ui框架  
 
 ## vantUi调用键盘组件的时候 控制键盘的显示与隐藏是show的值 与其他无关
 ## 在Vue中任何阶段的生命周期都获取不到$refs 可以用setTimeout异步 然后等dom彻底加载完成 获取的到数据（比如dom的宽高）
