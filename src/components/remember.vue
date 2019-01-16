@@ -13,7 +13,7 @@
                 <van-tab title="收支">
                     <div class="jizhang">
                         <span class="type" ref="type">{{name}}</span>
-                        <input type="number" placeholder="0.00" class="money" v-model="money" @click="show=true"/>
+                        <input type="number" placeholder="0.00" class="money" v-model="money" @click="show=true" @focus="this.blur()"/>
                     </div>
                     <div class="icon">
                         <div class="icon_list" v-for="item in list" :key="item.id" @click="checked(item.id)">
@@ -82,6 +82,7 @@
                 month = this.date.getMonth() + 1 < 10 ? '0'+ (this.date.getMonth() + 1) : this.date.getMonth() + 1,
                 day = this.date.getDate() + 1 < 10 ? '0'+ this.date.getDate() : this.date.getDate();
             this.date = `${year}-${month}-${day}`
+            
         },
         mounted(){
             setTimeout(()=>{
@@ -142,6 +143,7 @@
             showKeyboard(){
                 this.keyBoardHeight = this.$refs.keyboard.$el.clientHeight; // 键盘的高度
                 this.$refs.select.style.bottom = this.keyBoardHeight+'px'
+                console.log(document.activeElement);
             },
             hideKeyBoard(){
                 /* 
