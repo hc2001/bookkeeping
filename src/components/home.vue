@@ -70,7 +70,7 @@ export default {
     },
     getTotalMoney(){  // 本月支出 本月收入 净资产
       this.totalMoney = this.$store.getters.totalMoneys;
-      console.log(this.totalMoney);
+      // console.log(this.totalMoney);
     },
     goTop(){
       console.log('goTop');
@@ -219,7 +219,7 @@ export default {
               > .note {
                 width: 4rem;
                 position: absolute;
-                top: .24rem;
+                top: .32rem;
                 color: #0000007a;
                 font-size: .32rem;
               }

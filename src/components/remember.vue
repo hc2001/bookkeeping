@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container"  >
         <!-- NavBar -->
         <van-nav-bar
         right-text="再记一笔"
@@ -8,40 +8,41 @@
         @click-left="onClickLeft"
         @click-right="onClickRight"
         />
-        <van-tabs v-model="active" id="tab">
-            <van-tab title="收支">
-                <div class="jizhang">
-                    <span class="type" ref="type">其他</span>
-                    <input type="number" placeholder="0.00" class="money" v-model="money" @click="show=true"/>
-                </div>
-                <div class="icon">
-                    <div class="icon_list" v-for="item in list" :key="item.id" @click="checked(item.id)">
-                        <img src="../lib/images/checked.png" v-show="item.checked">
-                        <span class="iconfont" v-html="item.icon"></span>
-                        <p>{{item.name}}</p>
+        <div class="hideKeyBoard" @click="hideKeyBoard">
+            <van-tabs v-model="active" id="tab">
+                <van-tab title="收支">
+                    <div class="jizhang">
+                        <span class="type" ref="type">{{name}}</span>
+                        <input type="number" placeholder="0.00" class="money" v-model="money" @click="show=true"/>
                     </div>
-                </div>
-                <div class="select" ref="select">
-                    <span class="shouzhi" @click="shouOrZhi">{{shouzhi | sz}}</span>
-                    <span class="pay_type" @click="payTypes">{{payType | pay_type}}</span>
-                    <span class="date">{{date}}</span>
-                    <input type="text" placeholder="写备注" class="note" v-model="note"/>
-                </div>
-                <van-number-keyboard
-                :show="show"
-                theme="custom"
-                extra-key="."
-                close-button-text="完成"
-                @blur="show = false"
-                @input="onInput"
-                @delete="onDelete"
-                @show="showKeyboard"
-                @hide="hideKeyBoard"
-                ref="keyboard"
-                />
-            </van-tab>
-            <van-tab title="转账">内容 2</van-tab>
-        </van-tabs>
+                    <div class="icon">
+                        <div class="icon_list" v-for="item in list" :key="item.id" @click="checked(item.id)">
+                            <img src="../lib/images/checked.png" v-show="item.checked">
+                            <span class="iconfont" v-html="item.icon"></span>
+                            <p>{{item.name}}</p>
+                        </div>
+                    </div>
+                    <div class="select" ref="select">
+                        <span class="shouzhi" @click="shouOrZhi">{{shouzhi | sz}}</span>
+                        <span class="pay_type" @click="payTypes">{{payType | pay_type}}</span>
+                        <span class="date">{{date}}</span>
+                        <input type="text" placeholder="写备注" class="note" v-model="note"/>
+                    </div>
+                    <van-number-keyboard
+                    :show="show"
+                    theme="custom"
+                    extra-key="."
+                    close-button-text="完成"
+                    @blur="show = false"
+                    @input="onInput"
+                    @delete="onDelete"
+                    @show="showKeyboard"
+                    ref="keyboard"
+                    />
+                </van-tab>
+                <van-tab title="转账">内容 2</van-tab>
+            </van-tabs>
+        </div>
     </div>
 </template>
 <script>
@@ -56,6 +57,7 @@
                 payType:1, // 现金 || 支付宝 || 微信
                 date: new Date(), // 时间
                 note:'', // 备注 绑定到input
+                name:'其他', // 类型名字 默认是“其他”
                 list:[
                     {id:1, name:'其他', icon:'&#xe65b;', checked:true},
                     {id:2, name:'吃喝饮食', icon:'&#xe6c7;', checked:false},
@@ -76,11 +78,14 @@
             }
         },
         created(){
-            this.date = `${this.date.getFullYear()}-${this.date.getMonth() + 1}-${this.date.getDate()}`
+            let year = this.date.getFullYear(),
+                month = this.date.getMonth() + 1 < 10 ? '0'+ (this.date.getMonth() + 1) : this.date.getMonth() + 1,
+                day = this.date.getDate() + 1 < 10 ? '0'+ this.date.getDate() : this.date.getDate();
+            this.date = `${year}-${month}-${day}`
         },
         mounted(){
             setTimeout(()=>{
-                // 等dom彻底创建完成了 防止刚进来定位设置不成功
+                // 等dom彻底创建完成了 防止刚进来固定定位设置不成功
                 this.keyBoardHeight = this.$refs.keyboard.$el.clientHeight; // 键盘的高度
                 console.log(this.keyBoardHeight);
                 this.$refs.select.style.bottom = this.keyBoardHeight+'px'
@@ -91,6 +96,11 @@
                 this.$router.go(-1)
             },
             onClickRight(){
+                // 金额不能为空
+                if (this.money == '') {
+                    this.$toast('你是来捣乱的嘛？小宝贝')
+                    return 
+                }
                 let id =  this.$store.state.dataList.length + 1;
                 let icon = '';
                 this.list.some(item=>{
@@ -101,21 +111,26 @@
                 })
                 if(this.shouzhi == 1){  // 支出
                     this.money = `-${this.money}`
+                    this.$toast('恭喜你,记录了这剁手时刻...')
                 } else {
                     this.money = this.money
-                }
-                console.log(icon);
+                    this.$toast('又有收入啦！')
+                }   
                 let addBill = {
                     id,
                     date:this.date,
                     income:0,
                     pay:0,
-                    icon,
-                    name:this.$refs.type.innerText,
-                    note:this.note,
-                    money:this.money
+                    list:[{
+                        icon,
+                        name:this.name,
+                        note:this.note,
+                        money:this.money
+                    }]
                 }
-                console.log(addBill);
+                // console.log(addBill);
+                this.$store.commit('addDataList',addBill) // 调用公共仓库方法 添加数据
+                this.$router.push('/home') // 回到主页
             },
             onInput(value){
                 console.log(value);
@@ -128,8 +143,14 @@
                 this.keyBoardHeight = this.$refs.keyboard.$el.clientHeight; // 键盘的高度
                 this.$refs.select.style.bottom = this.keyBoardHeight+'px'
             },
-            hideKeyBoard(){ 
-                this.$refs.select.style.bottom = '0px'
+            hideKeyBoard(){
+                /* 
+                    由于设置异步延时 如果绑定全局的container的点击事件 则会在下一个页面找不到这个元素
+                    于是给UI组件Tab设置了点击事件 隐藏掉按钮
+                */
+                setTimeout(()=>{
+                    this.$refs.select.style.bottom = '0px'
+                },1)
             },
             shouOrZhi(){
                 if(this.shouzhi == 1){
@@ -153,7 +174,7 @@
                         item.checked = false
                     } else { // 当前元素设置为选中状态
                         item.checked = true;
-                        this.$refs.type.innerText = item.name
+                        this.name = item.name
                     }
                 })
             }
@@ -202,7 +223,7 @@
     .container {
         position: relative;
         font-size: .32rem;
-        > #tab {
+        #tab {
             font-size: .36rem;
             font-weight: 700;
             .jizhang {
