@@ -13,7 +13,7 @@
                 <van-tab title="收支">
                     <div class="jizhang">
                         <span class="type" ref="type">{{name}}</span>
-                        <input type="number" placeholder="0.00" class="money" v-model="money" @click="show=true" @focus="this.blur()"/>
+                        <input type="number" placeholder="0.00" class="money" v-model="money" @click="show=true" @focus="focus"/>
                     </div>
                     <div class="icon">
                         <div class="icon_list" v-for="item in list" :key="item.id" @click="checked(item.id)">
@@ -143,7 +143,6 @@
             showKeyboard(){
                 this.keyBoardHeight = this.$refs.keyboard.$el.clientHeight; // 键盘的高度
                 this.$refs.select.style.bottom = this.keyBoardHeight+'px'
-                console.log(document.activeElement);
             },
             hideKeyBoard(){
                 /* 
@@ -179,6 +178,10 @@
                         this.name = item.name
                     }
                 })
+            },
+            focus(){
+                // 阻止移动端键盘弹出
+                document.activeElement.blur();
             }
         },
         watch:{
