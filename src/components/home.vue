@@ -46,7 +46,14 @@
     <router-link to="/remember" tag="div" class="remember">
       <span>+</span>
     </router-link>
-
+    <!-- 左侧弹出框 -->
+    <van-popup v-model="show" position="left" :overlay="true" >
+      <div class="popup" ref="popup">
+        <div :class="item.selected?'current':'' " v-for="item in popupLeft" :key="item.id" @click="replace(item.id)">
+          <router-link :to="item.link">{{item.name}}</router-link>
+        </div>
+      </div>
+    </van-popup>
   </div>
 </template>
 
@@ -57,11 +64,27 @@ export default {
     return {
       dataList:[],   // 存放账本数据列表
       totalMoney:{}, // 存放总收入和总支出和净资产的对象
+      show:false,
+      popupLeft:[{
+        id:1,
+        name:'首页',
+        link:'/home',
+        selected:true
+      },{
+        id:2,
+        name:'关于作者',
+        link:'/home/about',
+        selected:false
+      }]
     }
   },
   created(){
     this.getDataList();
     this.getTotalMoney();
+  },
+  updated(){
+    // 设置左侧侧边栏高度
+    this.$refs.popup.style.height = document.documentElement.clientHeight + 'px'
   },
   methods:{
     getDataList(){
@@ -76,7 +99,16 @@ export default {
       console.log('goTop');
     },
     openLeft(){
-      console.log('openLeft');
+      this.show = !this.show
+    },
+    replace(id){
+      this.popupLeft.forEach(item=>{
+        if (item.id != id) {
+          item.selected = false
+        } else {
+          item.selected = true
+        }
+      })
     }
   }
 }
@@ -124,6 +156,7 @@ export default {
     .container {
       width: 100%;
       font-size: .28rem;
+      background-color: #fff;
       /* 总金额部分 */
       .panel {
         background-color: #2196F2;
@@ -190,7 +223,7 @@ export default {
             }
             > .pay_money {
               float: right;
-              color: #397967  ;
+              color: #397967;
             }
           }
         }
@@ -243,10 +276,29 @@ export default {
         background-color: #a93f2c;
         > span {
           position: absolute;
-          left: 26%;
-          top: 0;  
+          left: 28%;
+          top: 5%;  
           color: #fff;
           font-size: .7rem;
+        }
+      }
+      // 左侧弹出框
+      .popup {
+        width: 3rem;
+        height: 100%;
+        margin-top: .5rem;
+        > div {
+          height: 1rem;
+          line-height: 1rem;
+          margin-bottom: .2rem;
+          padding-left: .2rem;
+          font-size: .36rem;
+          > a {
+            color: #7BBDF7;
+          }
+        }
+        > .current {
+          background-color: #f0f0f0;
         }
       }
     }

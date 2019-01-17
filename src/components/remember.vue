@@ -3,45 +3,40 @@
         <!-- NavBar -->
         <van-nav-bar
         right-text="再记一笔"
-        title="纯记账"
+        title="收支"
         left-arrow
         @click-left="onClickLeft"
         @click-right="onClickRight"
         />
-        <div class="hideKeyBoard" @click="hideKeyBoard">
-            <van-tabs v-model="active" id="tab">
-                <van-tab title="收支">
-                    <div class="jizhang">
-                        <span class="type" ref="type">{{name}}</span>
-                        <input type="number" placeholder="0.00" class="money" v-model="money" @click="show=true" @focus="focus"/>
-                    </div>
-                    <div class="icon">
-                        <div class="icon_list" v-for="item in list" :key="item.id" @click="checked(item.id)">
-                            <img src="../lib/images/checked.png" v-show="item.checked">
-                            <span class="iconfont" v-html="item.icon"></span>
-                            <p>{{item.name}}</p>
-                        </div>
-                    </div>
-                    <div class="select" ref="select">
-                        <span class="shouzhi" @click="shouOrZhi">{{shouzhi | sz}}</span>
-                        <span class="pay_type" @click="payTypes">{{payType | pay_type}}</span>
-                        <span class="date">{{date}}</span>
-                        <input type="text" placeholder="写备注" class="note" v-model="note"/>
-                    </div>
-                    <van-number-keyboard
-                    :show="show"
-                    theme="custom"
-                    extra-key="."
-                    close-button-text="完成"
-                    @blur="show = false"
-                    @input="onInput"
-                    @delete="onDelete"
-                    @show="showKeyboard"
-                    ref="keyboard"
-                    />
-                </van-tab>
-                <van-tab title="转账">内容 2</van-tab>
-            </van-tabs>
+        <div class="hideKeyBoard" @click="hideKeyBoard" id="tab">
+            <div class="jizhang">
+                <span class="type" ref="type">{{name}}</span>
+                <input type="number" placeholder="0.00" class="money" v-model="money" @click="show=true" @focus="focus"/>
+            </div>
+            <div class="icon">
+                <div class="icon_list" v-for="item in list" :key="item.id" @click="checked(item.id)">
+                    <img src="../lib/images/checked.png" v-show="item.checked">
+                    <span class="iconfont" v-html="item.icon"></span>
+                    <p>{{item.name}}</p>
+                </div>
+            </div>
+            <div class="select" ref="select">
+                <span class="shouzhi" @click="shouOrZhi">{{shouzhi | sz}}</span>
+                <span class="pay_type" @click="payTypes">{{payType | pay_type}}</span>
+                <span class="date">{{date}}</span>
+                <input type="text" placeholder="写备注" class="note" v-model="note"/>
+            </div>
+            <van-number-keyboard
+            :show="show"
+            theme="custom"
+            extra-key="."
+            close-button-text="完成"
+            @blur="show = false"
+            @input="onInput"
+            @delete="onDelete"
+            @show="showKeyboard"
+            ref="keyboard"
+            />
         </div>
     </div>
 </template>
@@ -49,7 +44,7 @@
     export default {
         data(){
             return {
-                active:0,  // 默认展示哪个tab 从0开始
+                active:1,  // 默认展示哪个tab 从0开始
                 show:true, // 默认一进来显示键盘
                 money:'',  // 存放输入的金额
                 keyBoardHeight:0,  // 存放键盘的高度

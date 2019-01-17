@@ -31,14 +31,13 @@ export default new Vuex.Store({
             let len = state.dataList.length - 1,  // 列表数据最后一条的索引
                 dataList = state.dataList[len];  // 最后一条数据
             
-            // 只需要比对最后一条数据 前面几天的数据完全没有可能是同一天 也无循环的必要
+            // 因为没有做时间选择 只需要比对最后一条数据 前面几天的数据完全没有可能是同一天 也无循环的必要
             if (!dataList) {  // 无数据的时候为空 取反进来
-                console.log(123);
                 state.dataList.push(data);                
             } else if (dataList.date == data.date) {
-                dataList.list.push({icon:data.list[0].icon,name:data.list[0].name,note:data.list[0].note,money:data.list[0].money});
+                dataList.list.unshift({icon:data.list[0].icon,name:data.list[0].name,note:data.list[0].note,money:data.list[0].money});
             } else {
-                state.dataList.push(data);
+                state.dataList.unshift(data);
             }
             
             console.log(state.dataList);
